@@ -4,6 +4,7 @@ import com.prestamossb.prestamossbapi.app.commant.client.CreateClient;
 import com.prestamossb.prestamossbapi.app.query.client.ClientFind;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.client.ClientRequest;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.client.ClientResponse;
+import com.prestamossb.prestamossbapi.infraestruture.controllers.ResponseText;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,9 @@ public class ClientController {
 
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody ClientRequest clientRequest) {
+    public ResponseEntity<ResponseText> create(@RequestBody ClientRequest clientRequest) {
         createClient.create(clientRequest);
-        return new ResponseEntity<>("Created",HttpStatus.CREATED);
+        return new ResponseEntity<>(ResponseText.CREATED,HttpStatus.CREATED);
     }
 
     @GetMapping

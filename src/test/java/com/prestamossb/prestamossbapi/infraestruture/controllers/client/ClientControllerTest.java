@@ -2,9 +2,11 @@ package com.prestamossb.prestamossbapi.infraestruture.controllers.client;
 
 
 import com.github.javafaker.Faker;
+import com.prestamossb.prestamossbapi.domain.client.Client;
 import com.prestamossb.prestamossbapi.domain.client.ClientRepository;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.client.ClientRequest;
 
+import com.prestamossb.prestamossbapi.infraestruture.controllers.ResponseText;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.List;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
@@ -31,8 +37,6 @@ class ClientControllerTest {
 
     @Container
     public static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:9.6.12");
-
-
 
     @Autowired
     private MockMvc mockMvc;
@@ -68,14 +72,35 @@ class ClientControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/client")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(clientRequesString))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+
+        ;
+
         assertEquals(1, clientRepository.findAll().size());
     }
 
     @Test
     void findAll() throws Exception {
+        Faker faker = new Faker();
+        List<Client> clients = new ArrayList<>();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/client")).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
+//        Spawn Client instances with fake data and add them to the list
+        for (int i = 0; i < 10; i++) {
+            Client client = new Client();
+            client.setName(faker.name().firstName());
+            client.setLastName(faker.name().lastName());
+            client.setPhone(faker.phoneNumber().cellPhone());
+            client.setAddress(faker.address().fullAddress());
+            client.setEmail(faker.internet().emailAddress());
+            clients.add(client);
+        }
+
+
+        clientRepository.saveAll(clients);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/client"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",hasSize(10) ));
 
     }
 }
