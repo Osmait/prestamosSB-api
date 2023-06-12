@@ -15,11 +15,6 @@ jobs:
         with:
           java-version: '17'
 
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: Set up Docker
-        uses: byloth/docker-setup-action@v1
 
       - name: Start Docker daemon
         run: |
