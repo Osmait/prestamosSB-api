@@ -50,7 +50,7 @@ public class Loan {
     @UpdateTimestamp
     private LocalDateTime UpdateAt;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
     private Client client;
 }
