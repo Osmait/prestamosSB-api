@@ -7,22 +7,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Set up JDK
+      - name: Start database
+        run: docker-compose up -d
+
+      - name: Setup Java JDK
         uses: actions/setup-java@v3.10.0
+
         with:
-          java-version: '17'
-
-
-      - name: Start Docker daemon
-        run: |
-          docker info
-          sudo service docker start
-
-      - name: Start Testcontainers
-        run: docker pull testcontainers/ryuk:0.3.0
+          distribution: 'corretto'
+          java-version: '19'
 
       - name: Run tests
         run: ./gradlew test
