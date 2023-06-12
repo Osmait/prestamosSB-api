@@ -1,20 +1,36 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3.10.0
-
+      - name: Set up JDK
+        uses: actions/setup-java@v2
         with:
-          distribution: 'corretto'
           java-version: '17'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Set up Docker
+        uses: docker/setup-docker@v1
+
+      - name: Start Docker daemon
+        run: |
+          docker info
+          sudo service docker start
+
+      - name: Start Testcontainers
+        run: docker pull testcontainers/ryuk:0.3.0
 
       - name: Run tests
         run: ./gradlew test
