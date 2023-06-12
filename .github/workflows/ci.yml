@@ -9,15 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Start database
-        run: docker-compose up -d
-
       - name: Setup Java JDK
         uses: actions/setup-java@v3.10.0
 
         with:
           distribution: 'corretto'
-          java-version: '19'
+          java-version: '17'
 
       - name: Run tests
         run: ./gradlew test
