@@ -1,6 +1,7 @@
 package com.prestamossb.prestamossbapi.infraestruture.controllers.client;
 
 
+import com.github.javafaker.Faker;
 import com.prestamossb.prestamossbapi.domain.client.ClientRepository;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.client.ClientRequest;
 
@@ -12,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -53,12 +54,14 @@ class ClientControllerTest {
 
     @Test
     void create() throws Exception {
+
+        Faker faker = new Faker();
         ClientRequest clientRequest = new ClientRequest();
-        clientRequest.setName("saul");
-        clientRequest.setLastName("burgos");
-        clientRequest.setPhone("8296870920");
-        clientRequest.setAddress("santiago");
-        clientRequest.setEmail("saulburgos78@gmail.com");
+        clientRequest.setName(faker.name().firstName());
+        clientRequest.setLastName(faker.name().lastName());
+        clientRequest.setPhone(faker.phoneNumber().cellPhone());
+        clientRequest.setAddress(faker.address().fullAddress());
+        clientRequest.setEmail(faker.internet().emailAddress());
 
         String clientRequesString = objectMapper.writeValueAsString(clientRequest);
 
@@ -70,7 +73,9 @@ class ClientControllerTest {
     }
 
     @Test
-    void findAll() {
+    void findAll() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/client")).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
 
     }
 }

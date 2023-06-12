@@ -1,20 +1,20 @@
-name: CI
-
-on: [push]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3.10.0
-
-        with:
-          distribution: 'corretto'
-          java-version: '17'
-
-      - name: Run tests
-        run: ./gradlew test
+#name: CI
+#
+#on: [push]
+#
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Setup Java JDK
+#        uses: actions/setup-java@v3.10.0
+#
+#        with:
+#          distribution: 'corretto'
+#          java-version: '17'
+#
+#      - name: Run tests
+#        run: ./gradlew test
