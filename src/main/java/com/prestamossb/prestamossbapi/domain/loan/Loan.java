@@ -1,6 +1,7 @@
 package com.prestamossb.prestamossbapi.domain.loan;
 
 import com.prestamossb.prestamossbapi.domain.client.Client;
+import com.prestamossb.prestamossbapi.domain.transaction.Transaction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -53,4 +55,7 @@ public class Loan {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
+
+    @OneToMany(mappedBy = "loan")
+    private List<Transaction> transactions;
 }
