@@ -23,6 +23,7 @@ public class TransactionController {
 
     private final TransactionFind transactionFind;
 
+    @PostMapping
     public ResponseEntity<ResponseText> create(@RequestBody TransactionRequest transactionRequest){
         createTransaction.create(transactionRequest);
         return new ResponseEntity<>(ResponseText.CREATED, HttpStatus.CREATED);
