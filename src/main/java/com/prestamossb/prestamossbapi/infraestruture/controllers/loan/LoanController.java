@@ -29,7 +29,7 @@ public class LoanController {
     }
 
     @GetMapping("/{id}")
-    private  ResponseEntity<List<LoanResponse>> findAll(@PathVariable UUID id){
+    private  ResponseEntity<List<LoanResponse>>findAll(@PathVariable UUID id){
        List<LoanResponse> loanResponseList =  loanFind.findAll(id);
        return new ResponseEntity<>(loanResponseList,HttpStatus.OK);
     }

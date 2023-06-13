@@ -7,6 +7,10 @@ import com.prestamossb.prestamossbapi.domain.client.ClientRepository;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.client.ClientRequest;
 
 import com.prestamossb.prestamossbapi.infraestruture.controllers.ResponseText;
+import jakarta.transaction.Transactional;
+import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
+@Transactional
 class ClientControllerTest {
 
     @Container
@@ -46,13 +51,42 @@ class ClientControllerTest {
 
     @Autowired
     private ClientRepository clientRepository;
+
+
+
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry dymDynamicPropertyRegistry) {
         dymDynamicPropertyRegistry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
         dymDynamicPropertyRegistry.add("spring.datasource.username",postgresContainer::getUsername);
         dymDynamicPropertyRegistry.add("spring.datasource.password",postgresContainer::getPassword);
 
+
     }
+
+@Test
+void findAll() throws Exception {
+    Faker faker = new Faker();
+    List<Client> clients = new ArrayList<>();
+
+//        Spawn Client instances with fake data and add them to the list
+    for (int i = 0; i < 10; i++) {
+        Client client = new Client();
+        client.setName(faker.name().firstName());
+        client.setLastName(faker.name().lastName());
+        client.setPhone(faker.phoneNumber().cellPhone());
+        client.setAddress(faker.address().fullAddress());
+        client.setEmail(faker.internet().emailAddress());
+        clients.add(client);
+    }
+
+
+    clientRepository.saveAll(clients);
+
+    mockMvc.perform(MockMvcRequestBuilders.get("/client"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$",hasSize(10) ));
+
+}
 
 
 
@@ -76,31 +110,9 @@ class ClientControllerTest {
 
         ;
 
+
         assertEquals(1, clientRepository.findAll().size());
     }
 
-    @Test
-    void findAll() throws Exception {
-        Faker faker = new Faker();
-        List<Client> clients = new ArrayList<>();
 
-//        Spawn Client instances with fake data and add them to the list
-        for (int i = 0; i < 10; i++) {
-            Client client = new Client();
-            client.setName(faker.name().firstName());
-            client.setLastName(faker.name().lastName());
-            client.setPhone(faker.phoneNumber().cellPhone());
-            client.setAddress(faker.address().fullAddress());
-            client.setEmail(faker.internet().emailAddress());
-            clients.add(client);
-        }
-
-
-        clientRepository.saveAll(clients);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/client"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$",hasSize(10) ));
-
-    }
 }
