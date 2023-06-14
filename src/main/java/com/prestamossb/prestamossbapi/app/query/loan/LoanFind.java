@@ -50,9 +50,7 @@ public class LoanFind {
                 loan.getAmountOfPayments(),
                 loan.getFrequency(),
                 loan.getCreateAt(),
-                loan.getUpdateAt()
-                );
-
+                loan.getUpdateAt());
     }
 
     public Double getBalance(List<Transaction> transactionList, Loan loan){

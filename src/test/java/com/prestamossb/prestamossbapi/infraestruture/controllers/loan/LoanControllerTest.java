@@ -8,6 +8,9 @@ import com.prestamossb.prestamossbapi.domain.client.ClientRepository;
 import com.prestamossb.prestamossbapi.domain.loan.Frequency;
 import com.prestamossb.prestamossbapi.domain.loan.Loan;
 import com.prestamossb.prestamossbapi.domain.loan.LoanRepository;
+import com.prestamossb.prestamossbapi.domain.transaction.Transaction;
+import com.prestamossb.prestamossbapi.domain.transaction.TransactionRepository;
+import com.prestamossb.prestamossbapi.domain.transaction.TransactionType;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.loan.LoanRequest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +54,11 @@ class LoanControllerTest {
     @Autowired
     private LoanRepository loanRepository;
 
+    @Autowired
+    private ClientRepository clientRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry dymDynamicPropertyRegistry) {
         dymDynamicPropertyRegistry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
@@ -58,8 +66,7 @@ class LoanControllerTest {
         dymDynamicPropertyRegistry.add("spring.datasource.password",postgresContainer::getPassword);
     }
 
-    @Autowired
-    private ClientRepository clientRepository;
+
 
     static Faker faker;
 
@@ -126,5 +133,30 @@ class LoanControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/loan/ "+clientDb.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$",hasSize(10)));
+    }
+
+    @Test
+    public void  findBalance() throws Exception {
+        Client clientDb = clientRepository.findAll().get(0);
+        Loan loanRequest = new Loan();
+        loanRequest.setAmount(Double.valueOf(faker.commerce().price()));
+        loanRequest.setInterest(Double.valueOf(faker.commerce().price(1,10)));
+        loanRequest.setFrequency(Frequency.BIWEEKLY);
+        loanRequest.setPaymentDate(LocalDateTime.parse("2023-06-10T18:38:03.448566"));
+        loanRequest.setAmountOfPayments(6);
+        loanRequest.setClient(clientDb);
+        loanRepository.save(loanRequest);
+
+        Loan loanDb =  loanRepository.findAllByClientId(clientDb.getId()).orElseThrow().get(0);
+
+        Transaction transaction = new Transaction();
+        transaction.setTransactionType(TransactionType.pay);
+        transaction.setAmount(1000d);
+        transaction.setLoan(loanDb);
+
+        transactionRepository.save(transaction);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/loan/balance/ "+loanDb.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
