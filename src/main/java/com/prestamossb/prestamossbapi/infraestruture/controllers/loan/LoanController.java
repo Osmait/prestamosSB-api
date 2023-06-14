@@ -34,4 +34,10 @@ public class LoanController {
        return new ResponseEntity<>(loanResponseList,HttpStatus.OK);
     }
 
+    @GetMapping("balance/{id}")
+    private  ResponseEntity<LoanResponse>findBalance(@PathVariable UUID id){
+        LoanResponse loanResponse =  loanFind.findBalance(id);
+        return new ResponseEntity<>(loanResponse,HttpStatus.OK);
+    }
+
 }
