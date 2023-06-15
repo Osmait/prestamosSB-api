@@ -7,8 +7,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class ClientRequest {
+
+
+    private UUID id;
 
     @NotNull(message = "Name is require")
     @Size(min = 1,max = 50,message = "Name is require")
@@ -30,6 +35,7 @@ public class ClientRequest {
 
     public Client toClient(){
         Client client = new Client();
+        client.setId(id);
         client.setName(name);
         client.setLastName(lastName);
         client.setEmail(email);
