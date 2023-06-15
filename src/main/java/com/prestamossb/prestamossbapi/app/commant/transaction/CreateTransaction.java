@@ -5,6 +5,7 @@ import com.prestamossb.prestamossbapi.domain.loan.LoanRepository;
 import com.prestamossb.prestamossbapi.domain.transaction.Transaction;
 import com.prestamossb.prestamossbapi.domain.transaction.TransactionRepository;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.transaction.TransactionRequest;
+import com.prestamossb.prestamossbapi.infraestruture.controllers.exceptionControllers.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class CreateTransaction {
 
     public void setPaidState(TransactionRequest transactionRequest, Loan loan ){
         List<Transaction> transactionList = transactionRepository.findAllByLoanId(loan.getId())
-                .orElseThrow(() -> new RuntimeException("Error find transactions by id"));
+                .orElseThrow(() -> new NotFoundException("Error find transactions by id"));
 
 
         Double Total = transactionRequest.getAmount();

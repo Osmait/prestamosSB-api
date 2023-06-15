@@ -8,6 +8,7 @@ import com.prestamossb.prestamossbapi.domain.transaction.Transaction;
 import com.prestamossb.prestamossbapi.domain.transaction.TransactionRepository;
 import com.prestamossb.prestamossbapi.domain.transaction.TransactionType;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.loan.LoanResponse;
+import com.prestamossb.prestamossbapi.infraestruture.controllers.exceptionControllers.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -67,10 +68,10 @@ public class LoanFind {
 
     public LoanResponse findBalance(UUID loanId){
         Loan loan =  loanRepository.findById(loanId)
-                .orElseThrow(()-> new RuntimeException("Error Found loan"));
+                .orElseThrow(()-> new NotFoundException("Error Found loan"));
 
         List<Transaction> transactionList =  transactionRepository.findAllByLoanId(loanId).
-                orElseThrow(()-> new RuntimeException("Error Found loan"));
+                orElseThrow(()-> new NotFoundException("Error Found loan"));
 
         Double balanceAmount = getBalance(transactionList, loan);
 
