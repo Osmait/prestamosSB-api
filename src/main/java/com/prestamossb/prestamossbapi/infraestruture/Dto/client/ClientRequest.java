@@ -1,7 +1,7 @@
 package com.prestamossb.prestamossbapi.infraestruture.Dto.client;
 
 import com.prestamossb.prestamossbapi.domain.client.Client;
-import jakarta.validation.constraints.Digits;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,7 +23,7 @@ public class ClientRequest {
     @Size(min = 1,max = 50,message = "Email is require")
     private String email;
 
-    @Digits(integer = 10, fraction = 0, message = "the field not is a phone")
+
     private String phone;
 
     private String address;

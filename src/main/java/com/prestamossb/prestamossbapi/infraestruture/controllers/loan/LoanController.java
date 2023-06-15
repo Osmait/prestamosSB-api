@@ -5,9 +5,13 @@ import com.prestamossb.prestamossbapi.app.query.loan.LoanFind;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.loan.LoanRequest;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.loan.LoanResponse;
 import com.prestamossb.prestamossbapi.infraestruture.controllers.ResponseText;
+import com.prestamossb.prestamossbapi.infraestruture.controllers.exceptionControllers.exceptions.BadRequestException;
+import com.prestamossb.prestamossbapi.infraestruture.utils.ValidateErrors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +24,18 @@ public class LoanController {
 
     private final CreateLoan createLoan;
     private final LoanFind loanFind;
+    private final ValidateErrors validateErrors;
+
 
 
     @PostMapping
-    public ResponseEntity<ResponseText> create(@RequestBody LoanRequest loanRequest){
+    public ResponseEntity<ResponseText> create(@Validated  @RequestBody LoanRequest loanRequest, BindingResult result){
+
+        if(result.hasErrors()) {
+
+            throw new BadRequestException(validateErrors.ValidFields(result));
+        }
+
         createLoan.create(loanRequest);
         return new ResponseEntity<>(ResponseText.CREATED, HttpStatus.CREATED);
     }

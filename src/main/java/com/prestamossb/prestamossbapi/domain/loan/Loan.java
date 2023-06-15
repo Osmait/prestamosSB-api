@@ -24,6 +24,7 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(nullable = false)
     private Double amount;
 
     @Column(name = "payment_date",nullable = false)

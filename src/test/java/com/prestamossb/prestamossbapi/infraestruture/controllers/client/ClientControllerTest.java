@@ -6,11 +6,9 @@ import com.prestamossb.prestamossbapi.domain.client.Client;
 import com.prestamossb.prestamossbapi.domain.client.ClientRepository;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.client.ClientRequest;
 
-import com.prestamossb.prestamossbapi.infraestruture.controllers.ResponseText;
+
 import jakarta.transaction.Transactional;
-import org.junit.After;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +95,7 @@ void findAll() throws Exception {
         ClientRequest clientRequest = new ClientRequest();
         clientRequest.setName(faker.name().firstName());
         clientRequest.setLastName(faker.name().lastName());
-        clientRequest.setPhone(faker.phoneNumber().cellPhone());
+        clientRequest.setPhone(faker.phoneNumber().phoneNumber());
         clientRequest.setAddress(faker.address().fullAddress());
         clientRequest.setEmail(faker.internet().emailAddress());
 
