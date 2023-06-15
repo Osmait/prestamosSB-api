@@ -20,7 +20,6 @@ public class CreateLoan {
         Loan loanDb = loan.getLoanFromDto();
         loanDb.setClient(client);
 
-
         loanRepository.save(loanDb);
     }
 }

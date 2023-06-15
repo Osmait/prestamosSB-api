@@ -33,6 +33,11 @@ public class LoanController {
        List<LoanResponse> loanResponseList =  loanFind.findAll(id);
        return new ResponseEntity<>(loanResponseList,HttpStatus.OK);
     }
+    @GetMapping("payment-day/{id}")
+    private  ResponseEntity<List<LoanResponse>>findAllByDate(@PathVariable UUID id){
+        List<LoanResponse> loanResponseList =  loanFind.findAllByDate(id);
+        return new ResponseEntity<>(loanResponseList,HttpStatus.OK);
+    }
 
     @GetMapping("balance/{id}")
     private  ResponseEntity<LoanResponse>findBalance(@PathVariable UUID id){

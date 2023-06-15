@@ -8,6 +8,7 @@ import java.util.UUID;
 public record LoanResponse(UUID id ,
                            Double amount,
                            LocalDateTime paymentDate,
+                           LocalDateTime secondPaymentDate,
                            Double interest,
                            Integer amountOfPayments,
                            Frequency frequency,

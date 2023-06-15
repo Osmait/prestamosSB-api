@@ -29,6 +29,9 @@ public class Loan {
     @Column(name = "payment_date",nullable = false)
     private LocalDateTime PaymentDate;
 
+    @Column(name = "second_payment_date")
+    private LocalDateTime secondPaymentDate;
+
     @Column(nullable = false)
     private Double interest;
 

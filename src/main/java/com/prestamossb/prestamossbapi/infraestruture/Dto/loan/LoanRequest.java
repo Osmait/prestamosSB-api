@@ -23,6 +23,8 @@ public class LoanRequest {
     @NotNull
     private String paymentDate;
 
+    private LocalDateTime secondPaymentDate;
+
     @NotNull
     private Double interest;
 
@@ -36,6 +38,7 @@ public class LoanRequest {
 
     public Loan getLoanFromDto(){
        Loan loan = new Loan();
+       loan.setSecondPaymentDate(secondPaymentDate);
        loan.setAmount(amount);
        loan.setPaymentDate(LocalDateTime.parse(paymentDate, DateTimeFormatter.ISO_DATE_TIME));
        loan.setAmountOfPayments(amountOfPayments);

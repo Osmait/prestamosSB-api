@@ -21,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -68,7 +67,7 @@ class LoanControllerTest {
 
 
 
-    static Faker faker;
+    public static Faker faker;
 
     @BeforeEach
     public void  setUp(){
@@ -158,5 +157,34 @@ class LoanControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/loan/balance/ "+loanDb.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+
+
+    @Test
+    public  void  findAllByDate ()throws Exception{
+        Client clientDb = clientRepository.findAll().get(0);
+        Loan loanRequest = new Loan();
+        loanRequest.setAmount(Double.valueOf(faker.commerce().price()));
+        loanRequest.setInterest(Double.valueOf(faker.commerce().price(1,10)));
+        loanRequest.setFrequency(Frequency.BIWEEKLY);
+        loanRequest.setPaymentDate(LocalDateTime.parse("2023-06-01T18:38:03.448566"));
+        loanRequest.setSecondPaymentDate(LocalDateTime.parse("2023-06-15T18:38:03.448566"));
+        loanRequest.setAmountOfPayments(6);
+        loanRequest.setClient(clientDb);
+        loanRepository.save(loanRequest);
+
+        Loan loanDb =  loanRepository.findAllByClientId(clientDb.getId()).orElseThrow().get(0);
+
+        Transaction transaction = new Transaction();
+        transaction.setTransactionType(TransactionType.pay);
+        transaction.setAmount(1000d);
+        transaction.setLoan(loanDb);
+
+        transactionRepository.save(transaction);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/loan/payment-day/"+loanDb.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
     }
 }
