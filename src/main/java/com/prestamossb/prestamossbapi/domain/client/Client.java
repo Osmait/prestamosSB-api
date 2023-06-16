@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -51,6 +52,16 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Loan> loans;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return deleted == client.deleted && Objects.equals(id, client.id) && Objects.equals(name, client.name) && Objects.equals(lastName, client.lastName) && Objects.equals(phone, client.phone) && Objects.equals(address, client.address) && Objects.equals(email, client.email) && Objects.equals(createAt, client.createAt) && Objects.equals(updateAt, client.updateAt) && Objects.equals(loans, client.loans);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, phone, address, email, deleted, createAt, updateAt, loans);
+    }
 }
