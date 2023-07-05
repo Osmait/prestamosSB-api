@@ -19,20 +19,28 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(name = "last_name0",nullable = false)
     private String lastName;
+
     private String phone;
+
     @Column(nullable = false)
     private  String address;
+
     @Column(nullable = false)
     private  String email;
+
     @Column(name = "deleted",columnDefinition = "boolean default false")
     private  boolean deleted;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createAt;
+
     @Column(name = "update_at")
     @UpdateTimestamp
     private LocalDateTime UpdateAt;
