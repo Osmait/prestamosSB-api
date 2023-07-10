@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/loan")
+@RequestMapping("api/v1/loan")
 @RequiredArgsConstructor
 public class LoanController {
 
@@ -45,13 +45,13 @@ public class LoanController {
        List<LoanResponse> loanResponseList =  loanFind.findAll(id);
        return new ResponseEntity<>(loanResponseList,HttpStatus.OK);
     }
-    @GetMapping("payment-day/{id}")
+    @GetMapping("/payment-day/{id}")
     private  ResponseEntity<List<LoanResponse>>findAllByDate(@PathVariable UUID id){
         List<LoanResponse> loanResponseList =  loanFind.findAllByDate(id);
         return new ResponseEntity<>(loanResponseList,HttpStatus.OK);
     }
 
-    @GetMapping("balance/{id}")
+    @GetMapping("/balance/{id}")
     private  ResponseEntity<LoanResponse>findBalance(@PathVariable UUID id){
         LoanResponse loanResponse =  loanFind.findBalance(id);
         return new ResponseEntity<>(loanResponse,HttpStatus.OK);

@@ -4,6 +4,7 @@ import com.prestamossb.prestamossbapi.infraestruture.controllers.exceptionContro
 import com.prestamossb.prestamossbapi.infraestruture.controllers.exceptionControllers.exceptions.BadRequestException;
 import com.prestamossb.prestamossbapi.infraestruture.controllers.exceptionControllers.exceptions.DuplicateResourceException;
 import com.prestamossb.prestamossbapi.infraestruture.controllers.exceptionControllers.exceptions.NotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -55,5 +56,17 @@ public class DefaultExceptionHandler {
     public ResponseEntity<ApiError> handleException(DuplicateResourceException e) {
         ApiError apiError = new ApiError(e.getMessage(), HttpStatus.CONFLICT.value(), LocalDateTime.now());
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiError> handleException(Exception e
+                                                    ) {
+        ApiError apiError = new ApiError(
+
+                e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

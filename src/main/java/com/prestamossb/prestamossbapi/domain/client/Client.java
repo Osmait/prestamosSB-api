@@ -49,6 +49,9 @@ public class Client {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
+    @Column(nullable = false, name = "user_id")
+    private UUID userId;
+
     @OneToMany(mappedBy = "client")
     private List<Loan> loans;
 
