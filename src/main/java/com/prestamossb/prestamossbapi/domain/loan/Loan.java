@@ -60,6 +60,9 @@ public class Loan {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @Column(name = "user_id")
+    private UUID userId;
+
     @OneToMany(mappedBy = "loan")
     private List<Transaction> transactions;
 }

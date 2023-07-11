@@ -1,6 +1,7 @@
 package com.prestamossb.prestamossbapi.app.query.loan;
 
 
+import com.prestamossb.prestamossbapi.app.Auth.AuthService;
 import com.prestamossb.prestamossbapi.domain.loan.Frequency;
 import com.prestamossb.prestamossbapi.domain.loan.Loan;
 import com.prestamossb.prestamossbapi.domain.loan.LoanRepository;
@@ -22,8 +23,28 @@ public class LoanFind {
 
     private final LoanRepository loanRepository;
     private final TransactionRepository transactionRepository;
+    private  final AuthService authService;
+
+
+
+    public  List<LoanResponse> findAllUserId(){
+        UUID userId = authService.getIdCurrentLoggedUser().getId();
+        List<Loan> loanList =  loanRepository.findAllByUserId(userId).orElseThrow(()-> new RuntimeException("Error with userID"));
+        return loanList.stream().map(loan -> new LoanResponse(
+                loan.getId(),
+                loan.getAmount(),
+                loan.getPaymentDate(),
+                loan.getSecondPaymentDate(),
+                loan.getInterest(),
+                loan.getAmountOfPayments(),
+                loan.getFrequency(),
+                loan.getCreateAt(),
+                loan.getUpdateAt()
+        )).toList();
+    }
 
     public List<LoanResponse> findAll(UUID id){
+
         List<Loan>  loanList =loanRepository.findAllByClientId(id).orElseThrow(() -> new RuntimeException("Not fond loan"));
 
         return loanList.stream().map(loan -> new LoanResponse(
@@ -39,8 +60,9 @@ public class LoanFind {
         )).toList();
     }
 
-    public List<LoanResponse> findAllByDate(UUID id){
-        List<Loan>  loanList =loanRepository.findAllByClientId(id)
+    public List<LoanResponse> findAllByDate(){
+        UUID userId = authService.getIdCurrentLoggedUser().getId();
+        List<Loan>  loanList =loanRepository.findAllByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Not fond loan"));
 
         List<LoanResponse> loanResponseList =  loanList.stream()

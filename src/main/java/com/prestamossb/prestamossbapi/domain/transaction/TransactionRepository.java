@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface TransactionRepository  extends JpaRepository<Transaction, UUID> {
     Optional<List<Transaction>> findAllByLoanId(UUID loanId);
+    Optional<List<Transaction>> findAllByUserId(UUID userId);
 }

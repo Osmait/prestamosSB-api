@@ -28,6 +28,9 @@ public class Transaction {
 
     private Double amount;
 
+    @Column(name = "user_id")
+    private UUID userId;
+
     @Column(name = "deleted",columnDefinition = "boolean default false")
     private  boolean deleted;
 

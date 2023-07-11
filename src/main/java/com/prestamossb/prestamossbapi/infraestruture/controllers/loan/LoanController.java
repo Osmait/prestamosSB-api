@@ -39,15 +39,20 @@ public class LoanController {
         createLoan.create(loanRequest);
         return new ResponseEntity<>(ResponseText.CREATED, HttpStatus.CREATED);
     }
+    @GetMapping
+    private  ResponseEntity<List<LoanResponse>> findAllByUserId(){
+        List<LoanResponse> loanResponseList = loanFind.findAllUserId();
+        return  new ResponseEntity<>(loanResponseList,HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     private  ResponseEntity<List<LoanResponse>>findAll(@PathVariable UUID id){
        List<LoanResponse> loanResponseList =  loanFind.findAll(id);
        return new ResponseEntity<>(loanResponseList,HttpStatus.OK);
     }
-    @GetMapping("/payment-day/{id}")
-    private  ResponseEntity<List<LoanResponse>>findAllByDate(@PathVariable UUID id){
-        List<LoanResponse> loanResponseList =  loanFind.findAllByDate(id);
+    @GetMapping("/payment-day")
+    private  ResponseEntity<List<LoanResponse>>findAllByDate(){
+        List<LoanResponse> loanResponseList =  loanFind.findAllByDate();
         return new ResponseEntity<>(loanResponseList,HttpStatus.OK);
     }
 

@@ -41,4 +41,9 @@ public class TransactionController {
        List<TransactionResponse> transactionResponseList = transactionFind.FindAll(id);
        return new ResponseEntity<>(transactionResponseList,HttpStatus.OK);
     }
+    @GetMapping
+    public ResponseEntity<List<TransactionResponse>> findAllUser(){
+        List<TransactionResponse> transactionResponseList = transactionFind.FindAllByUserId();
+        return new ResponseEntity<>(transactionResponseList,HttpStatus.OK);
+    }
 }

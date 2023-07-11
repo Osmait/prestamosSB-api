@@ -1,5 +1,6 @@
 package com.prestamossb.prestamossbapi.app.query.Transaction;
 
+import com.prestamossb.prestamossbapi.app.Auth.AuthService;
 import com.prestamossb.prestamossbapi.domain.transaction.Transaction;
 import com.prestamossb.prestamossbapi.domain.transaction.TransactionRepository;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class TransactionFind {
 
     private final TransactionRepository transactionRepository;
+    private final AuthService authService;
 
     public List<TransactionResponse> FindAll(UUID id){
 
@@ -31,4 +33,19 @@ public class TransactionFind {
                  transaction.getUpdateAt()
                  )).toList();
     }
+    public List<TransactionResponse> FindAllByUserId(){
+        UUID userId = authService.getIdCurrentLoggedUser().getId();
+        List<Transaction> transactionList =  transactionRepository
+                .findAllByUserId(userId)
+                .orElseThrow(()-> new NotFoundException("Error Find Transaction"));
+
+        return transactionList.stream().map(transaction -> new TransactionResponse(
+                transaction.getId(),
+                transaction.getTransactionType(),
+                transaction.getAmount(),
+                transaction.getCreateAt(),
+                transaction.getUpdateAt()
+        )).toList();
+    }
+
 }
