@@ -11,11 +11,12 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class TransactionDelete {
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
 
     public void delete(UUID id){
         Transaction transaction = transactionRepository.findById(id).orElseThrow(()-> new NotFoundException("Error Transaction id Not exist"));
+        System.out.println(transaction);
         transaction.setDeleted(true);
         transactionRepository.save(transaction);
     }

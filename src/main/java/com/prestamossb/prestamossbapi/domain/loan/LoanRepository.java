@@ -11,6 +11,6 @@ import java.util.UUID;
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, UUID> {
 
-    Optional<List<Loan>> findAllByClientId(UUID id);
+    Optional<List<Loan>> findAllByClientIdAndDeletedFalse(UUID id);
     Optional<List<Loan>> findAllByUserId(UUID id);
 }

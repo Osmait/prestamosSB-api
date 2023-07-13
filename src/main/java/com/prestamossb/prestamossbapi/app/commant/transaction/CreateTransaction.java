@@ -35,7 +35,7 @@ public class CreateTransaction {
     }
 
     public void setPaidState(TransactionRequest transactionRequest, Loan loan ){
-        List<Transaction> transactionList = transactionRepository.findAllByLoanId(loan.getId())
+        List<Transaction> transactionList = transactionRepository.findAllByLoanIdAndDeletedFalse(loan.getId())
                 .orElseThrow(() -> new NotFoundException("Error find transactions by id"));
 
 

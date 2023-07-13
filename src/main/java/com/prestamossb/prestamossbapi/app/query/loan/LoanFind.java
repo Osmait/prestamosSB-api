@@ -46,7 +46,7 @@ public class LoanFind {
 
     public List<LoanResponse> findAll(UUID id){
 
-        List<Loan>  loanList =loanRepository.findAllByClientId(id).orElseThrow(() -> new RuntimeException("Not fond loan"));
+        List<Loan>  loanList =loanRepository.findAllByClientIdAndDeletedFalse(id).orElseThrow(() -> new RuntimeException("Not fond loan"));
 
         return loanList.stream().map(loan -> new LoanResponse(
                 loan.getId(),
@@ -95,7 +95,7 @@ public class LoanFind {
         Loan loan =  loanRepository.findById(loanId)
                 .orElseThrow(()-> new NotFoundException("Error Found loan"));
 
-        List<Transaction> transactionList =  transactionRepository.findAllByLoanId(loanId).
+        List<Transaction> transactionList =  transactionRepository.findAllByLoanIdAndDeletedFalse(loanId).
                 orElseThrow(()-> new NotFoundException("Error Found loan"));
 
         Double balanceAmount = getBalance(transactionList, loan);

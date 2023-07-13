@@ -65,6 +65,7 @@ public class LoanController {
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin
     private ResponseEntity<ResponseText> deleteLoan(@PathVariable UUID id){
        loanDelete.delete(id);
        return new ResponseEntity<>(ResponseText.DELETED,HttpStatus.OK);

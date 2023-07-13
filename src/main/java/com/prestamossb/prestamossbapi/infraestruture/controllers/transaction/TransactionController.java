@@ -49,6 +49,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin
     public ResponseEntity<ResponseText>deleteTransaction(@PathVariable UUID id){
         transactionDelete.delete(id);
         return new ResponseEntity<>(ResponseText.DELETED,HttpStatus.OK);

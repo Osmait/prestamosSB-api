@@ -22,7 +22,7 @@ public class TransactionFind {
     public List<TransactionResponse> FindAll(UUID id){
 
          List<Transaction> transactionList =  transactionRepository
-                 .findAllByLoanId(id)
+                 .findAllByLoanIdAndDeletedFalse(id)
                  .orElseThrow(()-> new NotFoundException("Error Find Transaction"));
 
          return transactionList.stream().map(transaction -> new TransactionResponse(
@@ -36,7 +36,7 @@ public class TransactionFind {
     public List<TransactionResponse> FindAllByUserId(){
         UUID userId = authService.getIdCurrentLoggedUser().getId();
         List<Transaction> transactionList =  transactionRepository
-                .findAllByUserId(userId)
+                .findAllByUserIdAndDeletedFalse(userId)
                 .orElseThrow(()-> new NotFoundException("Error Find Transaction"));
 
         return transactionList.stream().map(transaction -> new TransactionResponse(
