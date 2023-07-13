@@ -38,6 +38,7 @@ public class LoanFind {
                 loan.getInterest(),
                 loan.getAmountOfPayments(),
                 loan.getFrequency(),
+                loan.isPaid(),
                 loan.getCreateAt(),
                 loan.getUpdateAt()
         )).toList();
@@ -55,6 +56,7 @@ public class LoanFind {
                 loan.getInterest(),
                 loan.getAmountOfPayments(),
                 loan.getFrequency(),
+                loan.isPaid(),
                 loan.getCreateAt(),
                 loan.getUpdateAt()
         )).toList();
@@ -74,6 +76,7 @@ public class LoanFind {
                 loan.getInterest(),
                 loan.getAmountOfPayments(),
                 loan.getFrequency(),
+                loan.isPaid(),
                 loan.getCreateAt(),
                 loan.getUpdateAt()
         )).toList();
@@ -105,6 +108,7 @@ public class LoanFind {
                 loan.getInterest(),
                 loan.getAmountOfPayments(),
                 loan.getFrequency(),
+                loan.isPaid(),
                 loan.getCreateAt(),
                 loan.getUpdateAt());
     }

@@ -1,6 +1,7 @@
 package com.prestamossb.prestamossbapi.infraestruture.controllers.transaction;
 
 import com.prestamossb.prestamossbapi.app.commant.transaction.CreateTransaction;
+import com.prestamossb.prestamossbapi.app.commant.transaction.TransactionDelete;
 import com.prestamossb.prestamossbapi.app.query.Transaction.TransactionFind;
 
 import com.prestamossb.prestamossbapi.infraestruture.Dto.transaction.TransactionRequest;
@@ -26,7 +27,7 @@ public class TransactionController {
     private final CreateTransaction createTransaction;
     private final TransactionFind transactionFind;
     private final ValidateErrors validateErrors;
-
+    private final TransactionDelete transactionDelete;
     @PostMapping
     public ResponseEntity<ResponseText> create(@Validated  @RequestBody TransactionRequest transactionRequest, BindingResult result){
         if(result.hasErrors()) {
@@ -45,5 +46,11 @@ public class TransactionController {
     public ResponseEntity<List<TransactionResponse>> findAllUser(){
         List<TransactionResponse> transactionResponseList = transactionFind.FindAllByUserId();
         return new ResponseEntity<>(transactionResponseList,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseText>deleteTransaction(@PathVariable UUID id){
+        transactionDelete.delete(id);
+        return new ResponseEntity<>(ResponseText.DELETED,HttpStatus.OK);
     }
 }

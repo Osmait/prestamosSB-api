@@ -1,6 +1,7 @@
 package com.prestamossb.prestamossbapi.infraestruture.controllers.loan;
 
 import com.prestamossb.prestamossbapi.app.commant.loan.CreateLoan;
+import com.prestamossb.prestamossbapi.app.commant.loan.LoanDelete;
 import com.prestamossb.prestamossbapi.app.query.loan.LoanFind;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.loan.LoanRequest;
 import com.prestamossb.prestamossbapi.infraestruture.Dto.loan.LoanResponse;
@@ -25,7 +26,7 @@ public class LoanController {
     private final CreateLoan createLoan;
     private final LoanFind loanFind;
     private final ValidateErrors validateErrors;
-
+    private final LoanDelete loanDelete;
 
 
     @PostMapping
@@ -60,6 +61,12 @@ public class LoanController {
     private  ResponseEntity<LoanResponse>findBalance(@PathVariable UUID id){
         LoanResponse loanResponse =  loanFind.findBalance(id);
         return new ResponseEntity<>(loanResponse,HttpStatus.OK);
+
     }
 
+    @DeleteMapping("/{id}")
+    private ResponseEntity<ResponseText> deleteLoan(@PathVariable UUID id){
+       loanDelete.delete(id);
+       return new ResponseEntity<>(ResponseText.DELETED,HttpStatus.OK);
+    }
 }

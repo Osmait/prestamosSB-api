@@ -12,6 +12,7 @@ public record LoanResponse(UUID id ,
                            Double interest,
                            Integer amountOfPayments,
                            Frequency frequency,
+                           boolean isPaid,
                            LocalDateTime CreateAt,
                            LocalDateTime UpdateAt) {
 }
